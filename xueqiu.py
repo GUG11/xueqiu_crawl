@@ -45,10 +45,18 @@ def get_post_info(post_item_main):
 def rank(posts):
     posts.sort(reverse=True, key=lambda post: post.time)
 
+import argparse
+
+parser = argparse.ArgumentParser(description='crawl followees\' post.')
+parser.add_argument('uid', type=int, help='your user id')
+
+
+# e.g. python3 xueqiu.py 7291654456
 if __name__ == '__main__':
+    args = parser.parse_args()
     driver = webdriver.Chrome(ChromeDriverManager().install())
 
-    driver.get('https://xueqiu.com/u/7291654456#/follow')
+    driver.get(f'https://xueqiu.com/u/{args.uid}#/follow')
     profile_users_container = driver.find_element_by_class_name('profiles__users')
     followee_user_cards = profile_users_container.find_elements_by_class_name('user-name')
     followee_links = list(
